@@ -13,6 +13,7 @@ block headers over Nostr.
 
 - [Read the spec](https://nip-332.github.io/spec/)
 - [nip-332.md](spec/nip-332.md)
+- [On NostrHub](https://nostrhub.io/naddr1qvzqqqrcvypzphn7e50zja4x4ke0lf05mwq60kqjezakdx92qrw0rem2md27l4j9qq0ku6ts95enxv3dv9ehxatdv46hg7r094shgar9wd6xzarfdah8x2zgqaz), signed by the author
 
 ## Implementations
 
