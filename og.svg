@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#fafaf8"/>
+  <rect x="0" y="0" width="1200" height="6" fill="#1a5276"/>
+  <circle cx="92" cy="118" r="11" fill="#1a5276"/>
+  <text x="118" y="128" font-family="DejaVu Sans, sans-serif" font-size="26" font-weight="600" fill="#2c2c2c">NIP-332</text>
+  <text x="90" y="300" font-family="DejaVu Serif, serif" font-size="78" fill="#2c2c2c">Who verified</text>
+  <text x="90" y="388" font-family="DejaVu Serif, serif" font-size="78" fill="#2c2c2c">this snapshot?</text>
+  <text x="90" y="458" font-family="DejaVu Sans, sans-serif" font-size="27" fill="#666">assumeUTXO attestations over Nostr: a node says, under its own key,</text>
+  <text x="90" y="496" font-family="DejaVu Sans, sans-serif" font-size="27" fill="#666">what it computed. Kind 3332, signed, permanent, weighed not counted.</text>
+  <text x="90" y="560" font-family="DejaVu Sans Mono, monospace" font-size="24" fill="#1a5276">nip-332.github.io</text>
+</svg>
