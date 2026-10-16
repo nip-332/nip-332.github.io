@@ -142,6 +142,9 @@
       <li><strong>Weighed, not counted:</strong> a recomputation on a fully synced node is worth the most, a load with validation
         less, and a node whose chainstate came from a snapshot at or above the height has verified nothing. Counts never promote a hash;
         a disagreement is settled by recomputing.</li>
+      <li><strong>Disputable:</strong> a node whose recomputation disagrees publishes a Dispute (<code>kind 3331</code>), the same
+        statement with the hash it contradicts and the attestations that stated it. Nothing is removed; both sides stay on the record,
+        and only further recomputation settles it.</li>
       <li><strong>Checkable:</strong> signature, canonical form, the rules of the claim, tags against content, and, with a node of
         that chain, that the block is on it. This page checks the first four in your browser before showing a row.</li>
     </ul>
