@@ -153,6 +153,7 @@
   "pubkey": "c77fba35e5cdf0f3e7c37655c6ccd19924c462f5ae9629cf2f9fa0950a59199d",
   "created_at": 1792132900,
   "tags": [
+    ["v", "0.0.1"],
     ["network", "txbt4"],
     ["height", "150307"],
     ["hash", "000000000017ec2251d81c8d2ca401c713e98e85196c7f660a4088a7ca57b1cc"],
@@ -242,7 +243,7 @@
       if (c.method === 'recomputed' && String(c.chainstate).startsWith('snapshot:') && s.height !== undefined && Number(c.chainstate.slice(9)) >= s.height) throw new Error('recomputed on a snapshot chainstate at or above the height');
       if (c.note && (c.note.length > 200 || /:\/\/|www\./i.test(c.note))) throw new Error('note');
       const tag = (n) => e.tags.find((t) => t[0] === n)?.[1];
-      const want = { network: s.network, height: s.height === undefined ? undefined : String(s.height), hash: s.blockHash, txoutset_hash: s.txoutsetHash, method: c.method, implementation: c.implementation };
+      const want = { v: st.v, network: s.network, height: s.height === undefined ? undefined : String(s.height), hash: s.blockHash, txoutset_hash: s.txoutsetHash, method: c.method, implementation: c.implementation };
       for (const [k, v] of Object.entries(want)) if (tag(k) !== undefined && v !== undefined && tag(k) !== v) throw new Error('tag ' + k + ' disagrees with the content');
       return st;
     }
