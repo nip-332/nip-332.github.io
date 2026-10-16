@@ -263,7 +263,7 @@
       $('live-rows').innerHTML = rows.map(({ e, st }) => { const s = st.subject, c = st.claim; return `<tr>
         <td class="mono">${s.network ?? ''}</td><td class="mono">${s.height?.toLocaleString?.() ?? ''}</td>
         <td class="mono">${s.txoutsetHash.slice(0, 8)}…${s.txoutsetHash.slice(-8)}</td><td class="mono">${c.method}${c.chainstate === 'full' ? '' : ' (' + c.chainstate + ')'}</td>
-        <td class="mono"><a href="https://njump.me/${e.pubkey}">${e.pubkey.slice(0, 8)}…</a></td><td class="mono">${age(e.created_at)}</td><td><span class="ok">✓</span></td></tr>`; }).join('');
+        <td class="mono"><a href="https://nostr.at/${e.pubkey}">${e.pubkey.slice(0, 8)}…</a></td><td class="mono">${age(e.created_at)}</td><td><span class="ok">✓</span></td></tr>`; }).join('');
       $('live-note').textContent = rows.length ? 'Verified before display: id, signature, canonical statement, the claim\'s rules, tags against content. Whether the block is on the chain needs a node; the record checks that.' : '';
     }
     for (const url of RELAYS) {
