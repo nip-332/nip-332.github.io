@@ -102,6 +102,7 @@
     <nav>
       <a href="#latest">Latest Attestations</a>
       <a href="#how">How It Works</a>
+      <a href="#example">Example</a>
       <a href="#subscribe">Subscribe</a>
       <a href="spec/">Specification</a>
       <a href="https://github.com/nip-332">GitHub</a>
@@ -142,6 +143,55 @@
     </ul>
   </section>
 
+  <section id="example">
+    <h2>Example Event</h2>
+    <p>The event from the <a href="spec/#example-event">specification</a>, signed by a throwaway key during testing; the first real
+    attestation will replace it here. The content is the canonical statement, shown pretty.</p>
+<pre><code>{
+  "kind": 3332,
+  "pubkey": "c77fba35e5cdf0f3e7c37655c6ccd19924c462f5ae9629cf2f9fa0950a59199d",
+  "created_at": 1792132900,
+  "tags": [
+    ["network", "txbt4"],
+    ["height", "150307"],
+    ["hash", "000000000017ec2251d81c8d2ca401c713e98e85196c7f660a4088a7ca57b1cc"],
+    ["txoutset_hash", "372bfcaeef1e93892acccda9e700b00bf90f45d73746d69959d33620a3df5518"],
+    ["method", "recomputed"],
+    ["implementation", "/Satoshi:29.4.2/Knots:20260508/Plumb:6/"],
+    ["client", "assumeutxo sign", "https://play-grounds.github.io/assumeutxo/sign/", "0.0.1"],
+    ["t", "attestation"], ["t", "assumeutxo"], ["t", "txbt4"]
+  ],
+  "content": {
+    "v": "0.0.1",
+    "@type": "Attestation",
+    "subject": {
+      "network": "txbt4",
+      "genesis": "00000000da84f2bafbbc53dee25a72ae507ff4914b867c565be350b0da8bf043",
+      "height": 150307,
+      "blockHash": "000000000017ec2251d81c8d2ca401c713e98e85196c7f660a4088a7ca57b1cc",
+      "txoutsetHash": "372bfcaeef1e93892acccda9e700b00bf90f45d73746d69959d33620a3df5518",
+      "hashType": "hash_serialized_3",
+      "coins": 14230182,
+      "chainTxCount": 14813091,
+      "fileSha256": "86118db3a692b7c64bd4d9aef51a401f09722b9e92acb2826e7e76ac964529cd"
+    },
+    "claim": {
+      "method": "recomputed",
+      "chainstate": "full",
+      "validated": true,
+      "implementation": "/Satoshi:29.4.2/Knots:20260508/Plumb:6/",
+      "build": "v29.4.2.knots20260508.plumb6",
+      "commit": "532e1eb168b743c5500d9fec0aad73ad6abfd0ac",
+      "binarySha256": "a454b330e6fefeac983856ca00a924e21aadf59de5794de4165392eb776416f6",
+      "computedAt": "2026-10-16T06:17:56Z",
+      "note": "tool test, throwaway key"
+    }
+  },
+  "id": "707332a2ca8390e147fc599bcdfe88dacf7a59b2c0e470a7aba1e15d9af441da",
+  "sig": "f17ab2c3b1e5ba74eeba6e778f7cba9974a8a80e9f3e9e8e5e855e15c301338a938bece0fb5453433116f33b5ced3c8b2cd04267bf05a015cba48b8b294f9ecf"
+}</code></pre>
+  </section>
+
   <section id="subscribe">
     <h2>Subscribe via Nostr</h2>
 <pre><code>["REQ", "attestations", {
@@ -163,7 +213,8 @@
   </section>
 
   <footer>
-    NIP-332 · <a href="spec/">specification</a> · <a href="https://github.com/nip-332">github.com/nip-332</a>
+    NIP-332 · <a href="spec/">specification</a> · <a href="https://github.com/nip-332">github.com/nip-332</a><br>
+    Sibling: <a href="https://nip-333.github.io/">NIP-333</a>, Bitcoin block headers over Nostr · the record at <a href="https://assumeutxo.com/">assumeutxo.com</a>
   </footer>
 
   <script type="module">
