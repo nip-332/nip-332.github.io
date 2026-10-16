@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NIP-332: assumeUTXO Attestations over Nostr</title>
+  <meta name="description" content="A Nostr event in which a Bitcoin node attests to the hash of the UTXO set at a block: who verified an assumeUTXO snapshot, signed, permanent.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://nip-332.github.io/">
+  <meta property="og:title" content="NIP-332: assumeUTXO Attestations over Nostr">
+  <meta property="og:description" content="A signed, permanent statement by which a Bitcoin node says it computed the hash of the UTXO set at a block. Who verified an assumeUTXO snapshot, under their own key.">
+    <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="NIP-332: assumeUTXO Attestations over Nostr">
+  <meta name="twitter:description" content="A signed, permanent statement by which a Bitcoin node says it computed the hash of the UTXO set at a block. Who verified an assumeUTXO snapshot, under their own key.">
+    <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: Georgia, 'Times New Roman', serif;
+      color: #2c2c2c;
+      background: #fafaf8;
+      line-height: 1.7;
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem;
+    }
+
+    a { color: #1a5276; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    header {
+      margin-bottom: 2.5rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid #ddd;
+    }
+    header h1 { font-size: 2rem; font-weight: normal; letter-spacing: 0.02em; margin-bottom: 0.25rem; }
+    header .subtitle { font-size: 1.1rem; color: #666; font-style: italic; }
+    nav { margin-top: 1rem; font-size: 0.95rem; }
+    nav a { margin-right: 1.25rem; }
+
+    section { margin-bottom: 2.5rem; }
+    h2 {
+      font-size: 1.35rem;
+      font-weight: normal;
+      margin-bottom: 0.75rem;
+      padding-bottom: 0.35rem;
+      border-bottom: 1px solid #e5e3dd;
+    }
+    p { margin-bottom: 0.9rem; }
+    ul { margin: 0 0 0.9rem 1.4rem; }
+    li { margin-bottom: 0.3rem; }
+
+    code, pre {
+      font-family: 'Courier New', Courier, monospace;
+      background: #f0efeb;
+      border-radius: 3px;
+    }
+    code { padding: 0.1em 0.35em; font-size: 0.92em; }
+    pre {
+      padding: 1rem;
+      overflow-x: auto;
+      font-size: 0.85rem;
+      line-height: 1.5;
+      margin-bottom: 0.9rem;
+      border: 1px solid #e5e3dd;
+    }
+    pre code { background: none; padding: 0; }
+
+    table { border-collapse: collapse; width: 100%; font-size: 0.9rem; margin-bottom: 0.9rem; }
+    th, td { text-align: left; padding: 0.35rem 0.6rem; border-bottom: 1px solid #e5e3dd; }
+    th { color: #666; font-weight: normal; font-style: italic; }
+    td.mono { font-family: 'Courier New', Courier, monospace; font-size: 0.85rem; }
+
+    .pill {
+      display: inline-block; font-family: 'Courier New', monospace; font-size: 0.8rem;
+      border: 1px solid #c9c6bd; border-radius: 999px; padding: 0 0.6em; color: #666;
+      background: #f0efeb; margin-left: 0.4em; vertical-align: middle;
+    }
+    .ok { color: #1e7d36; }
+    .bad { color: #a04000; }
+
+    .netbtn {
+      font-family: Georgia, serif; font-size: 0.95rem; cursor: pointer;
+      background: none; border: 1px solid #c9c6bd; border-radius: 4px;
+      padding: 0.2rem 0.9rem; margin-right: 0.5rem; color: #555;
+    }
+    .netbtn.active { background: #1a5276; color: #fafaf8; border-color: #1a5276; }
+
+    #live-meta { font-size: 0.92rem; color: #666; margin-bottom: 0.7rem; }
+    #live-meta .age { font-family: 'Courier New', monospace; }
+
+    footer {
+      margin-top: 3rem; padding-top: 1.25rem; border-top: 1px solid #ddd;
+      font-size: 0.9rem; color: #888;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>NIP-332</h1>
+    <div class="subtitle">assumeUTXO Attestations over Nostr</div>
+    <nav>
+      <a href="#latest">Latest Attestations</a>
+      <a href="#how">How It Works</a>
+      <a href="#subscribe">Subscribe</a>
+      <a href="spec/">Specification</a>
+      <a href="https://github.com/nip-332">GitHub</a>
+    </nav>
+  </header>
+
+  <section>
+    <p><strong>Who verified this snapshot?</strong> An assumeUTXO snapshot is a UTXO set at a block, identified by its hash.
+    Today a node trusts only the hashes compiled into its own software, and the record of who else checked them is scattered across
+    review threads. NIP-332 defines a single regular Nostr event (<code>kind 3332</code>) in which a node says, under its own key,
+    that it computed the hash itself or loaded the snapshot and validated the chain behind it. Free to make, permanent once made:
+    a wrong attestation stays visible, so a key's history is its reputation.</p>
+  </section>
+
+  <section id="latest">
+    <h2>Latest Attestations <span class="pill" id="relay-pill">connecting…</span></h2>
+    <div id="live-meta">subscribing to relays…</div>
+    <table id="live-table" hidden>
+      <thead><tr><th>network</th><th>height</th><th>txoutset hash</th><th>method</th><th>by</th><th>when</th><th></th></tr></thead>
+      <tbody id="live-rows"></tbody>
+    </table>
+    <p id="live-note" style="font-size:0.85rem;color:#888"></p>
+  </section>
+
+  <section id="how">
+    <h2>How It Works</h2>
+    <ul>
+      <li><strong>A statement, not a vote:</strong> the content is a canonical JSON statement with a <em>subject</em> (the block,
+        the set's hash and its hash function, the same for every attester) and a <em>claim</em> (what this node did: recomputed from
+        blocks, or loaded and validated; where its own chainstate came from; which software). The facts are read from the node, never typed.</li>
+      <li><strong>Permanent:</strong> a regular event, not a replaceable one. Relays keep every attestation. A correction is a new
+        event that references the old; nothing is overwritten.</li>
+      <li><strong>Weighed, not counted:</strong> a recomputation on a fully synced node is worth the most, a load with validation
+        less, and a node whose chainstate came from a snapshot at or above the height has verified nothing. Counts never promote a hash;
+        a disagreement is settled by recomputing.</li>
+      <li><strong>Checkable:</strong> signature, canonical form, the rules of the claim, tags against content, and, with a node of
+        that chain, that the block is on it. This page checks the first four in your browser before showing a row.</li>
+    </ul>
+  </section>
+
+  <section id="subscribe">
+    <h2>Subscribe via Nostr</h2>
+<pre><code>["REQ", "attestations", {
+  "kinds": [3332],
+  "#network": ["tbtc4"],
+  "#height": ["150000"]
+}]</code></pre>
+    <p>Or by <code>#txoutset_hash</code> for one snapshot, or <code>authors</code> for everything a key has attested.
+    See the <a href="spec/">full specification</a>.</p>
+  </section>
+
+  <section>
+    <h2>Implementations</h2>
+    <ul>
+      <li><a href="https://assumeutxo.com">assumeutxo.com</a> — the record: every snapshot, its torrents, and who attested it</li>
+      <li><a href="https://play-grounds.github.io/assumeutxo/sign/">sign</a> — make an attestation in the browser, or from a node with <a href="https://github.com/play-grounds/assumeutxo/tree/gh-pages/sign">the tool</a></li>
+      <li><a href="https://nip-333.github.io">NIP-333</a> — block headers over Nostr, the sibling event</li>
+    </ul>
+  </section>
+
+  <footer>
+    NIP-332 · <a href="spec/">specification</a> · <a href="https://github.com/nip-332">github.com/nip-332</a>
+  </footer>
+
+  <script type="module">
+    // Live attestations: subscribe, then VERIFY before display: id, signature, canonical content, the claim's rules, tags against content.
+    import { schnorr } from 'https://cdn.jsdelivr.net/npm/@noble/curves@1.6.0/secp256k1/+esm';
+    const RELAYS = ['wss://relay.damus.io', 'wss://nos.lol', 'wss://relay.nostr.band'];
+    const $ = (id) => document.getElementById(id);
+    const hex = (b) => [...b].map((x) => x.toString(16).padStart(2, '0')).join('');
+    const unhex = (s) => Uint8Array.from(s.match(/../g), (x) => parseInt(x, 16));
+    const sha256 = async (s) => hex(new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(s))));
+    const jcs = (v) => v === null || typeof v !== 'object' ? JSON.stringify(v) : Array.isArray(v) ? '[' + v.map(jcs).join(',') + ']' : '{' + Object.keys(v).sort().map((k) => JSON.stringify(k) + ':' + jcs(v[k])).join(',') + '}';
+
+    async function verify(e) {
+      if (e.kind !== 3332) throw new Error('kind');
+      if (await sha256(JSON.stringify([0, e.pubkey, e.created_at, e.kind, e.tags, e.content])) !== e.id) throw new Error('id');
+      if (!schnorr.verify(unhex(e.sig), unhex(e.id), unhex(e.pubkey))) throw new Error('signature');
+      const st = JSON.parse(e.content); if (jcs(st) !== e.content) throw new Error('not canonical');
+      if (st['@type'] !== 'Attestation' || !st.subject || !st.claim) throw new Error('shape');
+      const { subject: s, claim: c } = st;
+      for (const k of ['blockHash', 'txoutsetHash', 'hashType']) if (s[k] === undefined) throw new Error('subject.' + k);
+      for (const k of ['method', 'chainstate', 'validated']) if (c[k] === undefined) throw new Error('claim.' + k);
+      if (!['recomputed', 'loaded'].includes(c.method)) throw new Error('method');
+      if (c.method === 'loaded' && !(c.validated && String(c.chainstate).startsWith('snapshot:'))) throw new Error('loaded without a validated snapshot chainstate');
+      if (c.method === 'recomputed' && String(c.chainstate).startsWith('snapshot:') && s.height !== undefined && Number(c.chainstate.slice(9)) >= s.height) throw new Error('recomputed on a snapshot chainstate at or above the height');
+      if (c.note && (c.note.length > 200 || /:\/\/|www\./i.test(c.note))) throw new Error('note');
+      const tag = (n) => e.tags.find((t) => t[0] === n)?.[1];
+      const want = { network: s.network, height: s.height === undefined ? undefined : String(s.height), hash: s.blockHash, txoutset_hash: s.txoutsetHash, method: c.method, implementation: c.implementation };
+      for (const [k, v] of Object.entries(want)) if (tag(k) !== undefined && v !== undefined && tag(k) !== v) throw new Error('tag ' + k + ' disagrees with the content');
+      return st;
+    }
+    const age = (t) => { const s = Math.floor(Date.now() / 1000) - t; return s < 5400 ? `${Math.round(s / 60)}m ago` : s < 172800 ? `${(s / 3600).toFixed(1)}h ago` : `${Math.round(s / 86400)}d ago`; };
+    const seen = new Map(); let connected = 0, bad = 0;
+    function render() {
+      const rows = [...seen.values()].sort((a, b) => b.e.created_at - a.e.created_at).slice(0, 50);
+      $('live-table').hidden = rows.length === 0;
+      $('live-meta').innerHTML = rows.length ? `<span class="ok">✓ ${rows.length} attestation${rows.length === 1 ? '' : 's'} verified in your browser</span>${bad ? ` · <span class="bad">${bad} rejected</span>` : ''}` : `no attestations on these relays yet${bad ? ` · <span class="bad">${bad} rejected</span>` : ''}`;
+      $('live-rows').innerHTML = rows.map(({ e, st }) => { const s = st.subject, c = st.claim; return `<tr>
+        <td class="mono">${s.network ?? ''}</td><td class="mono">${s.height?.toLocaleString?.() ?? ''}</td>
+        <td class="mono">${s.txoutsetHash.slice(0, 8)}…${s.txoutsetHash.slice(-8)}</td><td class="mono">${c.method}${c.chainstate === 'full' ? '' : ' (' + c.chainstate + ')'}</td>
+        <td class="mono"><a href="https://njump.me/${e.pubkey}">${e.pubkey.slice(0, 8)}…</a></td><td class="mono">${age(e.created_at)}</td><td><span class="ok">✓</span></td></tr>`; }).join('');
+      $('live-note').textContent = rows.length ? 'Verified before display: id, signature, canonical statement, the claim\'s rules, tags against content. Whether the block is on the chain needs a node; the record checks that.' : '';
+    }
+    for (const url of RELAYS) {
+      const ws = new WebSocket(url);
+      ws.onopen = () => { connected++; $('relay-pill').textContent = `${connected}/${RELAYS.length} relays`; ws.send(JSON.stringify(['REQ', 'a', { kinds: [3332], limit: 50 }])); };
+      ws.onclose = () => { connected = Math.max(0, connected - 1); $('relay-pill').textContent = `${connected}/${RELAYS.length} relays`; };
+      ws.onmessage = async (m) => { const d = JSON.parse(m.data); if (d[0] === 'EOSE') { render(); return; } if (d[0] !== 'EVENT') return; const e = d[2]; if (seen.has(e.id)) return;
+        try { const st = await verify(e); seen.set(e.id, { e, st }); } catch (err) { bad++; } render(); };
+    }
+    render();
+  </script>
+</body>
+</html>
